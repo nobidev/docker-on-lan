@@ -1,0 +1,26 @@
+version: '3.8'
+services:
+  d2l:
+    image: nginx
+    configs:
+      - source: nginx_conf
+        target: /etc/nginx/nginx.conf
+    volumes:
+      - type: bind
+        source: /var/run/docker.sock
+        target: /var/run/docker.sock
+      - type: bind
+        source: /var/run/buildkit/buildkitd.sock
+        target: /var/run/buildkit/buildkitd.sock
+    ports:
+      - target: 2375
+        published: 2375
+        mode: host
+      - target: 9375
+        published: 9375
+        mode: host
+    deploy:
+      mode: global
+configs:
+  nginx_conf:
+    file: nginx.conf
